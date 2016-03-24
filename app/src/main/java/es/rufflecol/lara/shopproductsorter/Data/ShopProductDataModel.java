@@ -9,14 +9,23 @@ public class ShopProductDataModel {
     @SerializedName("currencySymbol")
     private String currencySymbol;
 
+    @SerializedName("products")
+    private List<ShopProductData> products;
+
     public String getCurrencySymbol() {
         return currencySymbol;
     }
 
-    @SerializedName("products")
-    private List<ShopProductData> products;
+    public void setCurrencySymbol(String currencySymbol) {
+        this.currencySymbol = currencySymbol;
+    }
 
     public List<ShopProductData> getProducts() {
         return products;
     }
+
+    public void setProducts(List<ShopProductData> products) {
+        this.products = products;
+    }
+
 }

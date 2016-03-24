@@ -35,17 +35,19 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<ShopProductData> data = readDataFromFileAndParse();
-        RecyclerAdapter adapter = new RecyclerAdapter(data);
+        ShopProductDataModel data = readDataFromFileAndParse();
+        String getCurrencySymbol = data.getCurrencySymbol();
+        List<ShopProductData> products = data.getProducts();
+        RecyclerAdapter adapter = new RecyclerAdapter(getCurrencySymbol, products);
         recyclerView.setAdapter(adapter);
     }
 
-    private List<ShopProductData> readDataFromFileAndParse() {
+    private ShopProductDataModel readDataFromFileAndParse() {
         String text = readJsonFromFile();
         Gson gson = new Gson();
         ShopProductDataModel parsedData = gson.fromJson(text, ShopProductDataModel.class);
-        List<ShopProductData> data = parsedData.getProducts();
-        return data;
+//        ShopProductDataModel data = parsedData.getProducts();
+        return parsedData;
     }
 
     private String readJsonFromFile() {
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 while ((receiveString = bufferedReader.readLine()) != null) {
                     stringBuilder.append(receiveString);
                 }
+
                 inputStream.close();
                 returnValue = stringBuilder.toString();
             }

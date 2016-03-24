@@ -9,12 +9,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import es.rufflecol.lara.shopproductsorter.Data.ShopProductData;
+import es.rufflecol.lara.shopproductsorter.Data.ShopProductDataModel;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private List<ShopProductData> data;
+    private String getCurrencySymbol;
 
-    public RecyclerAdapter(List<ShopProductData> dataArgs) {
+    public RecyclerAdapter(String getCurrencySymbol, List<ShopProductData> dataArgs) {
+        this.getCurrencySymbol = getCurrencySymbol;
         this.data = dataArgs;
     }
 
@@ -32,7 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         ShopProductData shopProductData = data.get(position);
         holder.productName.setText(shopProductData.getName());
-        holder.productPrice.setText(shopProductData.getPrice());
+        holder.productPrice.setText(getCurrencySymbol + shopProductData.getPrice());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,6 +48,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             this.productName = (TextView) itemView.findViewById(R.id.product_name);
             this.productPrice = (TextView) itemView.findViewById(R.id.product_price);
         }
+
     }
 
     @Override
