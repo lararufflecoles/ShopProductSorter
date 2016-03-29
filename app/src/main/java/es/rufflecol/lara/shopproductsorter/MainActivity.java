@@ -14,10 +14,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
-import es.rufflecol.lara.shopproductsorter.Data.ShopProductData;
-import es.rufflecol.lara.shopproductsorter.Data.ShopProductDataModel;
+import es.rufflecol.lara.shopproductsorter.model.Product;
+import es.rufflecol.lara.shopproductsorter.model.ShopFeed;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,19 +36,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ShopProductDataModel data = readDataFromFileAndParse();
-        String getCurrencySymbol = data.getCurrencySymbol();
-        List<ShopProductData> products = data.getProducts();
-        RecyclerAdapter adapter = new RecyclerAdapter(getCurrencySymbol, products);
+        ShopFeed shopFeed = readShopFeedFromFile();
+        String currencySymbol = shopFeed.getCurrencySymbol();
+        List<Product> products = shopFeed.getProducts();
+        RecyclerAdapter adapter = new RecyclerAdapter(currencySymbol, products); /** Instantiating the RecyclerAdapter and passing through two parameters **/
         recyclerView.setAdapter(adapter);
     }
 
-    private ShopProductDataModel readDataFromFileAndParse() {
-        String text = readJsonFromFile();
+    private ShopFeed readShopFeedFromFile() {
+        String json = readJsonFromFile();
         Gson gson = new Gson();
-        ShopProductDataModel parsedData = gson.fromJson(text, ShopProductDataModel.class);
-//        ShopProductDataModel data = parsedData.getProducts();
-        return parsedData;
+        ShopFeed shopFeed = gson.fromJson(json, ShopFeed.class);
+        return shopFeed;
     }
 
     private String readJsonFromFile() {

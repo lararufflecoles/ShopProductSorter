@@ -6,19 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
-import es.rufflecol.lara.shopproductsorter.Data.ShopProductData;
-import es.rufflecol.lara.shopproductsorter.Data.ShopProductDataModel;
+import es.rufflecol.lara.shopproductsorter.model.Product;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private List<ShopProductData> data;
-    private String getCurrencySymbol;
+    private String currencySymbol;
+    private List<Product> products;
 
-    public RecyclerAdapter(String getCurrencySymbol, List<ShopProductData> dataArgs) {
-        this.getCurrencySymbol = getCurrencySymbol;
-        this.data = dataArgs;
+    public RecyclerAdapter(String currencySymbol, List<Product> products) {
+        this.currencySymbol = currencySymbol; /** Initialising the currencySymbol instance field **/
+        this.products = products; /** Initialising the products instance field **/
     }
 
     @Override
@@ -33,9 +33,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ShopProductData shopProductData = data.get(position);
-        holder.productName.setText(shopProductData.getName());
-        holder.productPrice.setText(getCurrencySymbol + shopProductData.getPrice());
+        Product product = products.get(position);
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+
+        holder.productName.setText(product.getName());
+        holder.productPrice.setText(currencySymbol + decimalFormat.format(product.getPrice()));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -48,11 +50,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             this.productName = (TextView) itemView.findViewById(R.id.product_name);
             this.productPrice = (TextView) itemView.findViewById(R.id.product_price);
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return products.size();
     }
 }

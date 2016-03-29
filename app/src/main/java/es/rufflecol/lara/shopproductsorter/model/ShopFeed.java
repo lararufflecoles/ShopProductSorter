@@ -1,16 +1,16 @@
-package es.rufflecol.lara.shopproductsorter.Data;
+package es.rufflecol.lara.shopproductsorter.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ShopProductDataModel {
+public class ShopFeed {
 
     @SerializedName("currencySymbol")
     private String currencySymbol;
 
     @SerializedName("products")
-    private List<ShopProductData> products;
+    private List<Product> products;
 
     public String getCurrencySymbol() {
         return currencySymbol;
@@ -20,11 +20,11 @@ public class ShopProductDataModel {
         this.currencySymbol = currencySymbol;
     }
 
-    public List<ShopProductData> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ShopProductData> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 
