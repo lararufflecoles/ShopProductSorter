@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import es.rufflecol.lara.shopproductsorter.model.Product;
@@ -34,7 +36,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Product product = products.get(position);
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
         holder.productName.setText(product.getName());
         holder.productPrice.setText(currencySymbol + decimalFormat.format(product.getPrice()));
@@ -55,5 +57,95 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount() {
         return products.size();
+    }
+
+    public List<Product> getItems() {
+        return products;
+    }
+
+    public void sortProductsAlphabeticallyAZ() {
+
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product lhs, Product rhs) {
+                String lhsName = lhs.getName();
+                String rhsName = rhs.getName();
+
+                return lhsName.compareTo(rhsName);
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortProductsAlphabeticallyZA() {
+
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product lhs, Product rhs) {
+                String lhsName = lhs.getName();
+                String rhsName = rhs.getName();
+
+                return rhsName.compareTo(lhsName);
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortProductsAscendingOrderPrice() {
+
+//        Collections.sort(products, new Comparator<Product>() {
+//            @Override
+//            public int compare(Product lhs, Product rhs) {
+//                double lhsPrice = lhs.getPrice();
+//                double rhsPrice = rhs.getPrice();
+//
+//                return Double.compare(lhsPrice, rhsPrice);
+//            }
+
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product lhs, Product rhs) {
+                double lhsPrice = lhs.getPrice();
+                double rhsPrice = rhs.getPrice();
+
+                if (lhsPrice == rhsPrice) {
+                    return 0;
+                } else if (lhsPrice > rhsPrice) {
+                    return 1;
+                } else { /** if (lhsPrice < rhsPrice) **/
+                    return -1;
+                }
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortProductsDescendingOrderPrice() {
+
+//        Collections.sort(products, new Comparator<Product>() {
+//            @Override
+//            public int compare(Product lhs, Product rhs) {
+//                double lhsPrice = lhs.getPrice();
+//                double rhsPrice = rhs.getPrice();
+//
+//                return Double.compare(rhsPrice, lhsPrice);
+//            }
+
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product lhs, Product rhs) {
+                double lhsPrice = lhs.getPrice();
+                double rhsPrice = rhs.getPrice();
+
+                if (lhsPrice == rhsPrice) {
+                    return 0;
+                } else if (lhsPrice < rhsPrice) {
+                    return 1;
+                } else { /** if (lhsPrice > rhsPrice) **/
+                    return -1;
+                }
+            }
+        });
+        notifyDataSetChanged();
     }
 }

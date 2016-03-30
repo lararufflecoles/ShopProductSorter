@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.gson.Gson;
 
@@ -14,13 +17,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import es.rufflecol.lara.shopproductsorter.model.Product;
 import es.rufflecol.lara.shopproductsorter.model.ShopFeed;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         ShopFeed shopFeed = readShopFeedFromFile();
         String currencySymbol = shopFeed.getCurrencySymbol();
         List<Product> products = shopFeed.getProducts();
-        RecyclerAdapter adapter = new RecyclerAdapter(currencySymbol, products); /** Instantiating the RecyclerAdapter and passing through two parameters **/
+        adapter = new RecyclerAdapter(currencySymbol, products); /** Instantiating the RecyclerAdapter and passing through two parameters **/
         recyclerView.setAdapter(adapter);
     }
 
@@ -76,5 +80,31 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Login activity", "Cannot read file: " + exception.toString());
         }
         return returnValue;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort_alphabetically_az:
+                adapter.sortProductsAlphabeticallyAZ();
+                return true;
+            case R.id.action_sort_alphabetically_za:
+                adapter.sortProductsAlphabeticallyZA();
+                return true;
+            case R.id.action_sort_ascending_order_price:
+                adapter.sortProductsAscendingOrderPrice();
+                return true;
+            case R.id.action_sort_descending_order_price:
+                adapter.sortProductsDescendingOrderPrice();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
