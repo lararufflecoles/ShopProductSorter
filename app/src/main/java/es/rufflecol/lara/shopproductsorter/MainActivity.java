@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         ShopFeed shopFeed = readShopFeedFromFile();
         String currencySymbol = shopFeed.getCurrencySymbol();
         List<Product> products = shopFeed.getProducts();
-        adapter = new RecyclerAdapter(currencySymbol, products); /** Instantiating the RecyclerAdapter and passing through two parameters **/
+        adapter = new RecyclerAdapter(currencySymbol, products, getResources()); /** Instantiating the RecyclerAdapter and passing through parameters **/
         recyclerView.setAdapter(adapter);
     }
 

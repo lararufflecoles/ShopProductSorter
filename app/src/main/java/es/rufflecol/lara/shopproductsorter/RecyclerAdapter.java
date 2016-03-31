@@ -1,5 +1,6 @@
 package es.rufflecol.lara.shopproductsorter;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private String currencySymbol;
     private List<Product> products;
+    private Resources resources;
 
-    public RecyclerAdapter(String currencySymbol, List<Product> products) {
+    public RecyclerAdapter(String currencySymbol, List<Product> products, Resources resources) {
         this.currencySymbol = currencySymbol; /** Initialising the currencySymbol instance field **/
-        this.products = products; /** Initialising the products instance field **/
+        this.products = products; /** As above **/
+        this.resources = resources; /** As above **/
     }
 
     @Override
@@ -39,7 +42,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
         holder.productName.setText(product.getName());
-        holder.productPrice.setText(currencySymbol + decimalFormat.format(product.getPrice()));
+
+        String formattedPrice = resources.getString(R.string.price, currencySymbol, decimalFormat.format(product.getPrice()));
+        holder.productPrice.setText(formattedPrice);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
